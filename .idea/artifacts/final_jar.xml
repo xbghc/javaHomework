@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="final:jar">
+    <output-path>$PROJECT_DIR$/out</output-path>
+    <root id="archive" name="final.jar">
+      <element id="module-output" name="CommunityManager" />
+      <element id="extracted-dir" path="F:/Program Files/java-workspace/test/mysql-connector-java-8.0.23.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
