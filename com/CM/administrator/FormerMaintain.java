@@ -1,6 +1,10 @@
 package com.CM.administrator;
 
+import com.CM.db.DBman;
+
 import javax.swing.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class FormerMaintain extends JFrame {
 
@@ -13,8 +17,8 @@ public class FormerMaintain extends JFrame {
     JButton query;
     JButton quit;
 
-    Object a[][];
-    Object name[]={"报修描述","处理时间","报修时间","报修状态"};
+    Object[][] dealLog;
+    Object[] name ={"报修描述","处理时间","报修时间","报修状态"};
 
     FormerMaintain(){
         setLayout(null);
@@ -24,25 +28,32 @@ public class FormerMaintain extends JFrame {
         add(note);
         note.setBounds(0,10,150,20);
 
-        //TODO 初始化数组
-        //瞎编的信息
-        a=new Object[10][4];
-
-        for(int i=0;i<10;i++){
-            for(int j=0;j<4;j++){
-                if(j==0)
-                    a[i][j]="下水道故障";
-                if(j==1)
-                    a[i][j]="2021.5.1";
-                if(j==2)
-                    a[i][j]="2021.5.2";
-                if(j==3)
-                    a[i][j]="已处理";
+        try{
+            ResultSet rs= DBman.execute("SELECT * FROM req WHERE status=1");
+            int count=0;
+            if (rs != null) {
+                while(rs.next()){
+                    count++;
+                }
             }
+            else return;
+            rs= DBman.execute("SELECT * FROM req WHERE status=1");
+
+            dealLog=new Object[count][4];
+            for(int i=0;i<count;i++){
+                assert rs != null;
+                dealLog[i][0]=rs.getString("type");
+                dealLog[i][1]=rs.getString("dealTime");
+                dealLog[i][2]=rs.getString("time");
+                dealLog[i][3]=rs.getString("已处理");
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return;
         }
 
 
-        information=new JTable(a,name);
+        information=new JTable(dealLog,name);
 
         scroll=new JScrollPane(information);
         add(scroll);
@@ -55,9 +66,7 @@ public class FormerMaintain extends JFrame {
         quit=new JButton("取消");
         add(quit);
         quit.setBounds(140,160,100,20);
-        quit.addActionListener(e->{
-            dispose();
-        });
+        quit.addActionListener(e-> dispose());
 
         setVisible(true);
     }

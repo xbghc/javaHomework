@@ -16,7 +16,7 @@ public class PanelNotice extends JPanel {
 
     NoticeListListener mouseListener;
 
-    PanelNotice() {
+    public PanelNotice() {
 
         setLayout(null);
 

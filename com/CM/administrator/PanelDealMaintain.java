@@ -17,14 +17,14 @@ public class PanelDealMaintain extends JPanel {
     JTable maintains;
 
     //声明table需要的信息
-    Object workerList[][];
-    Object nameW[]={"姓名","工种","状态"};
+    Object[][] workerList;
+    Object[] nameW ={"姓名","工种","状态"};
 
-    Object reqList[][];
-    Object nameM[]={"发布时间","报修描述","报修状态"};
+    Object[][] reqList;
+    Object[] nameM ={"发布时间","报修描述","报修状态"};
 
     //声明一个list，显示待处理的保修
-    JList InformationMaintain;
+    public JList InformationMaintain;
 
     //声明按钮
     JButton query;
@@ -55,10 +55,13 @@ public class PanelDealMaintain extends JPanel {
             workerList =new Object[rowCount][3];
 
             int i=0;
-            while(rs.next()){
+            while(true){
+                assert rs != null;
+                if (!rs.next()) break;
                 workerList[i][0]=rs.getString("name");
                 workerList[i][1]=rs.getString("type");
                 workerList[i][2]="空闲";
+                i++;
             }
 
 
@@ -70,7 +73,7 @@ public class PanelDealMaintain extends JPanel {
         // 报修
 
         try {
-            ResultSet rs= DBman.execute("SELECT * FROM req WHERE status=0");
+            ResultSet rs= DBman.execute("SELECT * FROM req WHERE status=0;");
             int rowCount;
             if(rs==null)return;
 
@@ -78,15 +81,18 @@ public class PanelDealMaintain extends JPanel {
             while(rs.next()) {
                 rowCount++;
             }
-            rs= DBman.execute("SELECT * FROM worker WHERE NOW()>freeTime");
+            rs= DBman.execute("SELECT * FROM req WHERE status=0;");
 
             reqList =new Object[rowCount][3];
 
             int i=0;
-            while(rs.next()){
+            while(true){
+                assert rs != null;
+                if (!rs.next()) break;
                 reqList[i][0]=rs.getString("time");
                 reqList[i][1]=rs.getString("type");
                 reqList[i][2]="未处理";
+                i++;
             }
 
 

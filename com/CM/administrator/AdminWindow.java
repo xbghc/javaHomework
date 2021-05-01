@@ -1,5 +1,7 @@
 package com.CM.administrator;
 
+import com.CM.resident.PanelNotice;
+
 import javax.swing.*;
 
 public class AdminWindow extends JFrame {
@@ -9,6 +11,7 @@ public class AdminWindow extends JFrame {
     PanelSelectPerson panelSelectPerson;   //删除户主信息
     PanelDealMaintain panelDealMaintain;   //处理报修信息
     PanelPostNotice panelPostNotice;       //发布公告
+    PanelNotice panelNotice;    //公告信息面板
 
     //声明需要的信息
     JLabel name;
@@ -29,8 +32,11 @@ public class AdminWindow extends JFrame {
         panelSelectPerson =new PanelSelectPerson();
         panelDealMaintain =new PanelDealMaintain();
         panelPostNotice =new PanelPostNotice();
+        panelNotice = new PanelNotice();
+
 
         choice=new JTabbedPane();
+        choice.add("社区公告", panelNotice);
         choice.add("增加户主", panelAddPerson);
         choice.add("删除账户", panelSelectPerson);
         choice.add("处理保修", panelDealMaintain);

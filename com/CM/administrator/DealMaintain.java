@@ -50,31 +50,44 @@ public class DealMaintain extends JFrame {
         Type.addItem("家具工");
         Type.addItem("淋浴工");
         Type.addItem("其他工");
+        Type.setSelectedIndex(-1);
         add(Type);
         Type.setBounds(80,100,150,20);
-        //TODO 添加监听事件，如果选择的种类改动，则调用 WhoCan(type,nameBox)  将可用工人加载入选择栏
+        Type.addActionListener(e->{
+            add(Name);
+            Name.setBounds(80,150,150,20);
+            WhoCan((String) Type.getSelectedItem(),Name);
 
+        });
 
         Name=new JComboBox<String>();
-        //TODO 添加监听事件，如果选中某个工人，则可以点击按钮，否则按钮不可点击
+
 
 
         confirm=new JButton("确认处理");
         add(confirm);
         confirm.setBounds(65,220,100,20);
 
-
-
         confirm.addActionListener(e->{
+            if(Type.getSelectedIndex()==-1){
+                JOptionPane.showMessageDialog(this,"您还未选择工人种类！",
+                        "tips",JOptionPane.WARNING_MESSAGE);
 
-            String name = (String) Name.getSelectedItem();
-            try {
-                String sql=String.format("UPDATE worker SET time=date_add(now(), interval 30 minute) WHERE name='%s'",name);
-                DBman.update(sql);
-            } catch (Exception exception) {
-                exception.printStackTrace();
+            }
+            else {
+                String name = (String) Name.getSelectedItem();
+                try {
+                    String sql=String.format("UPDATE worker SET freeTime=date_add(now(), interval 30 minute) WHERE name='%s'",name);
+                    DBman.update(sql);
+                    sql=String.format("UPDATE req SET status=1,dealTime=now() WHERE time='%s'",((String)maintain.getSelectedItem()).substring(0,19));
+                    DBman.update(sql);
+                } catch (Exception exception) {
+                    exception.printStackTrace();
+                }
             }
         });
+
+
 
         setVisible(true);
     }
@@ -82,7 +95,11 @@ public class DealMaintain extends JFrame {
     void WhoCan(String type,JComboBox nameBox){
         nameBox.removeAllItems();
         for(int i=0;i<workerList.length;i++){
-            if(workerList[i][1]==type)nameBox.addItem(workerList[i][0]);
+            if(workerList[i][1].equals(type))nameBox.addItem(workerList[i][0]);
         }
+    }
+
+    void updateStatus(String time){
+        //TODO 更新处理状态
     }
 }
