@@ -46,10 +46,11 @@ public class PanelDealMaintain extends JPanel {
             ResultSet rs= DBman.execute("SELECT * FROM worker WHERE NOW()>freeTime");
             int rowCount;
             if(rs==null)return;
-
-            rs.last();
-            rowCount = rs.getRow();
-            rs.beforeFirst();
+            rowCount=0;
+            while(rs.next()) {
+                rowCount++;
+            }
+            rs= DBman.execute("SELECT * FROM worker WHERE NOW()>freeTime");
 
             workerList =new Object[rowCount][3];
 
@@ -73,9 +74,11 @@ public class PanelDealMaintain extends JPanel {
             int rowCount;
             if(rs==null)return;
 
-            rs.last();
-            rowCount = rs.getRow();
-            rs.beforeFirst();
+            rowCount=0;
+            while(rs.next()) {
+                rowCount++;
+            }
+            rs= DBman.execute("SELECT * FROM worker WHERE NOW()>freeTime");
 
             reqList =new Object[rowCount][3];
 
