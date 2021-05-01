@@ -11,7 +11,7 @@ public class PanelNotice extends JPanel {
     JLabel notice;
 
 
-    JList noticeItem=new JList();;
+    JList<String> noticeItem=new JList<>();
     DefaultListModel<String> listModel;
 
     NoticeListListener mouseListener;
@@ -27,6 +27,7 @@ public class PanelNotice extends JPanel {
 
         listModel=new DefaultListModel<>();
         mouseListener=new NoticeListListener();
+        mouseListener.listModel=listModel;
         noticeItem.setModel(listModel);
 
         add(noticeItem);
