@@ -1,7 +1,10 @@
 package com.CM.administrator;
 
-import javax.print.attribute.standard.NumberOfInterveningJobs;
+import com.CM.db.DBman;
+
 import javax.swing.*;
+import java.sql.ResultSet;
+import java.sql.SQLException;
 
 public class PanelDealMaintain extends JPanel {
 
@@ -14,10 +17,10 @@ public class PanelDealMaintain extends JPanel {
     JTable maintains;
 
     //声明table需要的信息
-    Object a[][];
+    Object workerList[][];
     Object nameW[]={"姓名","工种","状态"};
 
-    Object b[][];
+    Object reqList[][];
     Object nameM[]={"发布时间","报修描述","报修状态"};
 
     //声明一个list，显示待处理的保修
@@ -36,34 +39,61 @@ public class PanelDealMaintain extends JPanel {
     PanelDealMaintain(){
         setLayout(null);
 
-        //TODO 从数据库中读取信息出来
-        a=new Object[20][3];
-        b=new Object[5][3];
-        //测试用的数据
-        for(int i=0;i<20;i++){
-            for(int j=0;j<3;j++){
-                if(j==0)
-                    a[i][j]="张三";
-                if(j==1)
-                    a[i][j]="水电工";
-                if(j==2)
-                    a[i][j]="空闲";
+
+
+        // 工人
+        try {
+            ResultSet rs= DBman.execute("SELECT * FROM worker WHERE NOW()>freeTime");
+            int rowCount;
+            if(rs==null)return;
+
+            rs.last();
+            rowCount = rs.getRow();
+            rs.beforeFirst();
+
+            workerList =new Object[rowCount][3];
+
+            int i=0;
+            while(rs.next()){
+                workerList[i][0]=rs.getString("name");
+                workerList[i][1]=rs.getString("type");
+                workerList[i][2]="空闲";
             }
+
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return;
         }
 
-        for(int i=0;i<5;i++){
-            for(int j=0;j<3;j++){
-                if(j==0)
-                    b[i][j]="2021.5.1";
-                if(j==1)
-                    b[i][j]="下水道堵塞";
-                if(j==2)
-                    b[i][j]="未处理";
+        // 报修
+
+        try {
+            ResultSet rs= DBman.execute("SELECT * FROM req WHERE status=0");
+            int rowCount;
+            if(rs==null)return;
+
+            rs.last();
+            rowCount = rs.getRow();
+            rs.beforeFirst();
+
+            reqList =new Object[rowCount][3];
+
+            int i=0;
+            while(rs.next()){
+                reqList[i][0]=rs.getString("time");
+                reqList[i][1]=rs.getString("type");
+                reqList[i][2]="未处理";
             }
+
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+            return;
         }
 
-        workers=new JTable(a,nameW);
-        maintains=new JTable(b,nameM);
+        workers=new JTable(workerList,nameW);
+        maintains=new JTable(reqList,nameM);
 
         scrollW=new JScrollPane(workers);
         add(scrollW);
@@ -102,7 +132,7 @@ public class PanelDealMaintain extends JPanel {
         add(deal);
         deal.setBounds(520,260,150,20);
         deal.addActionListener(e->{
-            new DealMaintain();
+            new DealMaintain(reqList,workerList);
         });
 
 

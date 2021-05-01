@@ -265,7 +265,7 @@ public class PanelMaintain extends JPanel{
         commit.addActionListener(e->{
             for(JCheckBox chkBox:boxes){
                 if(chkBox.isSelected()) {
-                    String sql=String.format("INSERT INTO req VALUES('%s','%s','%s')",
+                    String sql=String.format("INSERT INTO req VALUES('%s','%s','%s',0)",
                             chkBox.getText(),
                             username,
                             (new SimpleDateFormat("yyyy-MM-dd HH:mm:ss")).format(new Date().getTime()));

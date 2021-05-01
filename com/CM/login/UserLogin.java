@@ -85,7 +85,7 @@ public class UserLogin extends JFrame implements ActionListener {
                 dispose();
             }
             else if(flag==1){
-                new AdminWindow();
+                new AdminWindow(username.getText());
                 dispose();
             }
             else {

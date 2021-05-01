@@ -226,6 +226,10 @@ public class PanelAddPerson extends JPanel {
         // 添加到people表
         sql=String.format("INSERT INTO people (username,community,buildingNo,unitNo,doorNo)VALUES('%s','%s','%s','%s','%s')",username,community,buildingNo,unitNo,doorNo);
         DBman.update(sql);
+
+        // 设置账户余额为0
+        sql=String.format("INSERT INTO account (username,type,amount)values('%s','物业费',0),('%s','水费',0),('%s','燃气费',0),('%s','电费',0);",username,username,username,username);
+        DBman.update(sql);
     }
 
     public void ResetAll(){

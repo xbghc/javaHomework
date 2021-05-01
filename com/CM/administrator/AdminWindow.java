@@ -15,15 +15,14 @@ public class AdminWindow extends JFrame {
     JLabel id;
     JLabel position;
 
-    //声明需要的Text
-    JTextField textName;
-    JTextField textID;
-    JTextField textPosition;
 
     //声明选择子窗口的选项卡窗格
     JTabbedPane choice;          //面板选择栏
 
-    public AdminWindow(){
+    Individual individual;
+
+    public AdminWindow(String username){
+        individual=new Individual(username);
         setLayout(null);
         setBounds(150, 150, 700, 540);//设置主窗口的大小
         panelAddPerson =new PanelAddPerson();
@@ -40,15 +39,15 @@ public class AdminWindow extends JFrame {
         add(choice);
         choice.setBounds(0,100,700,440);
 
-        name=new JLabel("姓名:");
+        name=new JLabel("姓名:"+individual.name);
         add(name);
         name.setBounds(500,10,80,20);
 
-        id=new JLabel("工号:");
+        id=new JLabel("工号:"+individual.NO);
         add(id);
         id.setBounds(500,40,80,20);
 
-        position=new JLabel("职位:");
+        position=new JLabel("职位:管理员");
         add(position);
         position.setBounds(500,70,80,20);
 
